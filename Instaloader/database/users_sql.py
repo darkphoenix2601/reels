@@ -1,11 +1,10 @@
-from sqlalchemy import Column, Integer, String
+from sqlalchemy import Column, BigInteger, String
 from Instaloader.database import BASE, SESSION
-
 
 class Users(BASE):
     __tablename__ = "users"
     __table_args__ = {'extend_existing': True}
-    user_id = Column(Integer, primary_key=True)
+    user_id = Column(BigInteger, primary_key=True)  # Updated to BigInteger
     insta_username = Column(String)
     insta_password = Column(String)
 
@@ -48,15 +47,15 @@ async def delete_info(user_id):
 
 
 async def get_info(user_id):
-    q: Users = SESSION.query(Users).get(user_id)
+    q = SESSION.query(Users).get(user_id)
     if q:
         if q.insta_password:
             info = q.insta_username, q.insta_password
-            SESSION.close()
             return info
         else:
             return None, None
     else:
-        SESSION.add(Users(user_id))
+        new_user = Users(user_id)
+        SESSION.add(new_user)
         SESSION.commit()
         return None, None
