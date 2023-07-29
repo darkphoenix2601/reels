@@ -1,6 +1,6 @@
 pyrogram
 SQLAlchemy
 instaloader
-pyromod==latest
-TgCrypto==latest
+pyromod
+TgCrypto
 psycopg2
